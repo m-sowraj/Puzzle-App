@@ -21,10 +21,18 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.billbuddy.Puzzle",
+      "scheme": "Puzzle"  
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "948af7a6-14c9-4788-86e7-8b57e806b173"
+      },
+      "clerkPublishableKey": "pk_test_ZXZvbHZlZC1maXJlZmx5LTIzLmNsZXJrLmFjY291bnRzLmRldiQ"
     }
   }
 }
