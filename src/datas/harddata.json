@@ -1,0 +1,30 @@
+[
+    [
+        { "word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
+        { "word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
+        { "word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
+        { "word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
+        { "word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
+    ],
+    [
+        { "word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
+    ],
+    [
+        { "word": "CHOCOLATE", "hint": "Sweet treat", "clue": "Made from cocoa beans", "is_completion": false },
+        { "word": "HOUSE", "hint": "Place of residence", "clue": "Where people live", "is_completion": false },
+        { "word": "COAST", "hint": "Seashore", "clue": "Where land meets the sea", "is_completion": false },
+        { "word": "LEMON", "hint": "Citrus fruit", "clue": "Yellow sour fruit", "is_completion": false },
+        { "word": "TEA", "hint": "Hot beverage", "clue": "Commonly enjoyed with milk or sugar", "is_completion": false }
+    ],
+    [
+        { "word": "BREAK", "hint": "Pause", "clue": "Take a rest", "is_completion": false },
+        { "word": "CLOUD", "hint": "Condensed water vapor", "clue": "White fluffy mass in the sky", "is_completion": false },
+        { "word": "BOTTLE", "hint": "Container", "clue": "Used for holding liquids", "is_completion": false },
+        { "word": "DESK", "hint": "Work surface", "clue": "Where you might put your computer", "is_completion": false },
+        { "word": "SODA", "hint": "Carbonated drink", "clue": "Fizzy beverage", "is_completion": false }
+    ]
+]

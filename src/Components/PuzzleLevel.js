@@ -1,25 +1,105 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 //add navigation
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import CWG from 'cwg';
-import data from './data.json'
-const NumberSelectionScreen = ({ start, end }) => {
+// import completionData from '../datas/completion.json';
+import easydata from '../datas/data.json'
+import mediumdata from '../datas/mediumdata.json'
+import harddata from '../datas/harddata.json'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const NumberSelectionScreen = ({ start, end , difficultylevel}) => {
   const navigation = useNavigation();
   const numbers = [];
+  const [completionData, setCompletiondata] = useState({
+    easy: [],
+    medium: [],
+    hard: [],
+    point:[0],
+
+  });
+
+  useEffect(() => {
+		const retrieveData = async () => {
+		  try {
+			// Retrieve data associated with the key 'completionData'
+			const jsonData = await AsyncStorage.getItem('completionData');
+			
+			if (jsonData !== null) {
+			  // If data exists, parse it from JSON format
+			  const data = JSON.parse(jsonData);
+        console.log(data)
+			  await setCompletiondata(data); // Update state with the retrieved data
+			} else {
+			  setCompletiondata({easy:[],medium:[],hard:[],point:[0]});
+			  console.log('No data found.');
+			}
+		  } catch (error) {
+			console.error('Failed to retrieve data:', error);
+      
+		  }
+		};
+	
+		// Call the retrieveData function when the component mounts
+		retrieveData();
+	  }, []); 
+
+    useFocusEffect(
+      React.useCallback(() => {
+        // Refresh data or perform any necessary actions when the screen comes into focus
+        const retrieveData = async () => {
+          try {
+            const jsonData = await AsyncStorage.getItem('completionData');
+            if (jsonData !== null) {
+              const data = JSON.parse(jsonData);
+              setCompletiondata(data);
+            } else {
+              setCompletiondata({ easy: [], medium: [], hard: [0] });
+              console.log('No data found.');
+            }
+          } catch (error) {
+            console.error('Failed to retrieve data:', error);
+          }
+        };
+        retrieveData();
+      }, [])
+    );
+
+
   for (let i = start; i <= end; i++) {
     numbers.push(i);
   }
+  if(difficultylevel=='easy'){
+    data=easydata
+  }
+  else if(difficultylevel=='medium'){
+    data=mediumdata
 
+  }
+  else if(difficultylevel=='hard'){
+    data=harddata
+  }
   // Split numbers into chunks of three
   const chunks = [];
   while (numbers.length) {
     chunks.push(numbers.splice(0, 3));
   }
 
+  const getRandomIncompleteQuestion = () => {
+    let incompleteQuestions = data.filter(question =>
+      question.some(word => !word.is_completion)
+    );
+    if (incompleteQuestions.length === 0) {
+      
+      return null;
+    }
+    return incompleteQuestions[Math.floor(Math.random() * incompleteQuestions.length)];
+  };
+
   function handleNumberSelect(number) {
 
-    const words = data[number%4]; 
+    const words = getRandomIncompleteQuestion(); 
     // Extract only words from the list for generating the crossword puzzle
     const wordList = words.map(item => item.word);
     // Generate crossword puzzle
@@ -32,11 +112,13 @@ const NumberSelectionScreen = ({ start, end }) => {
     result.positionObjArr.forEach((wordObj, index) => {
       const { wordStr, xNum, yNum, isHorizon } = wordObj;
       const orientation = isHorizon ? 'across' : 'down';
-      const { word, hint } = words[index]; // Get the word and hint from the original array
+      const { word, hint ,clue } = words[index]; // Get the word and hint from the original array
+    
       clues.push({
         answer: word.toUpperCase(),
-        hint: hint, // Add the hint
-        startx: xNum + 1, // Adjust to start from 1-based index
+        hint: hint, 
+        clue: clue,
+        startx: xNum + 1, 
         starty: yNum + 1, // Adjust to start from 1-based index
         orientation: orientation,
         position: index + 1 // Position of the clue
@@ -46,8 +128,13 @@ const NumberSelectionScreen = ({ start, end }) => {
     crosswordData.push(clues);
     // Now crosswordData holds the crossword puzzle data with words and hints
     console.log(crosswordData);
-    navigation.navigate('CrosswordGrid', { crosswordData});
+    navigation.navigate('CrosswordGrid', { crosswordData ,difficultylevel,number});
   }
+  const isLevelCompleted = (number) => {
+    // return false;
+    return completionData[difficultylevel].includes(number);
+  };
+
 
 
   return (
@@ -57,8 +144,17 @@ const NumberSelectionScreen = ({ start, end }) => {
       {chunks.map((chunk, index) => (
         <View key={index} style={styles.row}>
           {chunk.map((number) => (
-            <TouchableOpacity  key={number} style={styles.button} onPress={() => handleNumberSelect(number)}>
-              <Text style={styles.buttonText}>{number}</Text>
+            // <TouchableOpacity  key={number} style={styles.button} onPress={() => handleNumberSelect(number)}>
+            <TouchableOpacity
+            key={number}
+            style={[
+              styles.button,
+              isLevelCompleted(number) && styles.completedButton,
+            ]}
+            onPress={() => handleNumberSelect(number)}
+            disabled={isLevelCompleted( number)}
+          >
+            <Text style={styles.buttonText}>{number}</Text>
             </TouchableOpacity>
           ))}
        
@@ -109,6 +205,9 @@ const styles = StyleSheet.create({
     color: '#0097B2',
     fontSize: 18,
   },
+  completedButton: {
+    opacity: 0.5, // Make completed levels appear blurred
+  }
 });
 
 export default NumberSelectionScreen;

@@ -1,11 +1,19 @@
 //CrosswordGrid.js
 
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, StyleSheet, Text, Button, ImageBackground,ScrollView ,  KeyboardAvoidingView  } from 'react-native';
+import { View, TextInput, StyleSheet, Text, Button,Image, ImageBackground,ScrollView ,  KeyboardAvoidingView, TouchableOpacity  } from 'react-native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { Modal } from 'react-native-paper';
+import * as FileSystem from 'expo-file-system';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
+
 
 let level = 0;
 
-const generateInitialGrid = (crosswordData) => {
+const generateInitialGrid = (crosswordData,difficultylevel,navigation) => {
+	try {
+	
 	const initialGrid = Array(7).fill(0).map(() => Array(8).fill('X'));
 	crosswordData[level].forEach(({ answer, startx, starty, orientation }) => {
 		let x = startx - 1;
@@ -20,9 +28,16 @@ const generateInitialGrid = (crosswordData) => {
 		}
 	});
 	return initialGrid;
+} catch (error) {
+
+	console.error('Error generating initial grid:', error);
+	navigation.navigate('NumberRangeSelector',{ difficulty:difficultylevel });
+	// Handle or log the error as needed
+}
 };
 
-const generateAnswerGrid = (crosswordData) => {
+const generateAnswerGrid = (crosswordData,difficultylevel,navigation) => {
+	try {
 	const answerGrid = Array(7).fill(0).map(() => Array(8).fill('X'));
 	crosswordData[level].forEach(({ answer, startx, starty, orientation }) => {
 		let x = startx - 1;
@@ -37,16 +52,60 @@ const generateAnswerGrid = (crosswordData) => {
 		}
 	});
 	return answerGrid;
+	} catch (error) {
+	console.error('Error generating Answer grid:', error);
+	navigation.navigate('NumberRangeSelector',{ difficulty:difficultylevel });
+	// Handle or log the error as needed
+	}
 };
 
 
 const CrosswordGrid = ({ route  }) => {
-    const { crosswordData } = route.params;
-	const [grid, setGrid] = useState(generateInitialGrid(crosswordData));
+	const navigation = useNavigation();
+    const { crosswordData ,difficultylevel,number} = route.params;
+	const [grid, setGrid] = useState(generateInitialGrid(crosswordData,difficultylevel,navigation));
+	const [clueModalVisible, setClueModalVisible] = useState(false);
+	const [selectedClue, setSelectedClue] = useState('');
+	const [completionData, setCompletiondata] = useState({
+		easy: [],
+		medium: [],
+		hard: [],
+		point:[0],
+	
+	  });
+	const [pnt, setpnt] = useState(0)
+	const [pnttoadd, setpnttoadd] = useState(2)
+	
+	
 
 	useEffect(() => {
-		setGrid(generateInitialGrid(crosswordData));
+		setGrid(generateInitialGrid(crosswordData,difficultylevel,navigation));
 	}, [crosswordData]);
+
+	useEffect(() => {
+		const retrieveData = async () => {
+		  try {
+			// Retrieve data associated with the key 'completionData'
+			const jsonData = await AsyncStorage.getItem('completionData');
+			
+			if (jsonData !== null) {
+			  // If data exists, parse it from JSON format
+			  const data = JSON.parse(jsonData);
+			  setCompletiondata(data); // Update state with the retrieved data
+			  setpnt(data.point[0])
+			} else {
+			  setCompletiondata({easy:[],medium:[],hard:[],point:[0]});
+			  setpnt(0)
+			  console.log('No data found.');
+			}
+		  } catch (error) {
+			console.error('Failed to retrieve data:', error);
+		  }
+		};
+	
+		// Call the retrieveData function when the component mounts
+		retrieveData();
+	  }, []);
 
 	const handleInputChange = (row, col, text) => {
 		const newGrid = [...grid];
@@ -56,73 +115,130 @@ const CrosswordGrid = ({ route  }) => {
 
 	const handleGenerate = () => {
 		level = (level + 1);
-		setGrid(generateInitialGrid(crosswordData));
+		setGrid(generateInitialGrid(crosswordData,difficultylevel,navigation));
 	};
 
-	const handleVerify = () => {
-		const answerGrid = generateAnswerGrid(crosswordData);
+	const handleVerify = async () => {
+		const answerGrid = generateAnswerGrid(crosswordData,difficultylevel,navigation);
 		const isCorrect = JSON.stringify(grid) === JSON.stringify(answerGrid);
 		if (isCorrect) {
-			alert('Congratulations! Your crossword is correct.');
+			
+			let updatedData = { ...completionData };
+			if (difficultylevel === 'easy') {
+				updatedData = { ...completionData, easy: [...completionData.easy, number] ,point:[pnt+pnttoadd] };
+			} else if (difficultylevel === 'medium') {
+				updatedData = { ...completionData, medium: [...completionData.medium, number],point:[pnt+pnttoadd] };
+			} else if (difficultylevel === 'hard') {
+				updatedData = { ...completionData, hard: [...completionData.hard, number],point:[pnt+pnttoadd] };
+			}
+	
+			try {
+				
+				await AsyncStorage.setItem('completionData', JSON.stringify(updatedData));
+				setCompletiondata(updatedData);
+
+				const jsonUri = `${FileSystem.documentDirectory}completion.json`;
+				console.log(updatedData)
+				await FileSystem.writeAsStringAsync(jsonUri, JSON.stringify(updatedData));
+		
+
+				alert('Congratulations! Your crossword is correct.');
+			} catch (error) {
+				console.error('Failed to update completion data:', error);
+				alert('Failed to update completion data. Please try again.');
+			}
 		} else {
 			alert('Incorrect. Please try again.');
 		}
 	};
+	
 
 	const handleReset = () => {
-		setGrid(generateInitialGrid(crosswordData));
+		setGrid(generateInitialGrid(crosswordData,difficultylevel,navigation));
 	};
 
 	const handleSolve = () => {
-		const answerGrid = generateAnswerGrid(crosswordData);
+		const answerGrid = generateAnswerGrid(crosswordData,difficultylevel,navigation);
+		setpnttoadd(0)
 		setGrid(answerGrid);
 	};
 
-	const renderGrid = () => (
-		<View style={styles.blueBackground}>
-			{grid.map((row, rowIndex) => (
-				<View key={rowIndex} style={styles.row}>
-					{row.map((cell, colIndex) => (
-						<View key={colIndex} style={styles.cellContainer}>
-							{crosswordData[level].map((entry) => {
-								const { startx, starty, position } = entry;
-								if (rowIndex + 1 === starty && colIndex + 1 === startx) {
-									return (
-										<Text key={`digit-${position}`} 
-											style={styles.smallDigit}>
-											{position}
-										</Text>
-									);
-								}
-								return null;
-							})}
-							<TextInput
-								style={[styles.cell, 
-								grid[rowIndex][colIndex] ==='X' ? styles.staticCell:null]}
-								value={cell}
-								editable={grid[rowIndex][colIndex] !== 'X'}
-								onChangeText={(text) =>
-									handleInputChange(rowIndex,colIndex, text)
-								}
-								maxLength={1}
-							/>
+	const handleClue = (clue) => {
+		setSelectedClue(clue);
+		setpnttoadd(1)
+		setClueModalVisible(true);
+	  };
+
+	  const renderGrid = () => {
+		try {
+			return (
+				<View style={styles.blueBackground}>
+					{grid.map((row, rowIndex) => (
+						<View key={rowIndex} style={styles.row}>
+							{row.map((cell, colIndex) => (
+								<View key={colIndex} style={styles.cellContainer}>
+									{crosswordData[level].map((entry) => {
+										try {
+											const { startx, starty, position } = entry;
+											if (rowIndex + 1 === starty && colIndex + 1 === startx) {
+												return (
+													<Text key={`digit-${position}`} 
+														style={styles.smallDigit}>
+														{position}
+													</Text>
+												);
+											}
+										} catch (error) {
+											console.error('Error rendering grid entry:', error);
+											// Handle or log the error as needed
+										}
+										return null;
+									})}
+									<TextInput
+										style={[styles.cell, 
+										grid[rowIndex][colIndex] ==='X' ? styles.staticCell:null]}
+										value={cell}
+										editable={grid[rowIndex][colIndex] !== 'X'}
+										onChangeText={(text) =>
+											handleInputChange(rowIndex,colIndex, text)
+										}
+										maxLength={1}
+									/>
+								</View>
+							))}
 						</View>
 					))}
 				</View>
-			))}
-		</View>
-		
-	);
+			);
+		} catch (error) {
+			console.error('Error rendering grid:', error);
+			// Handle or log the error as needed
+			return null;
+		}
+	};
+	
 
 	const renderQuestions = () => {
 		const questions = { across: [], down: [] };
 
-		crosswordData[level].forEach(({ hint, orientation, position }) => {
-			const questionText = `${position}. ${hint}`;
+		crosswordData[level].forEach(({ clue,hint, orientation, position }) => {
+			const questionText = `${position}. ${hint} `;
 			questions[orientation].push(
+				<>
+				
 				<Text key={`question-${position}`} style={styles.questionText}>
 					{questionText}
 				</Text>
+          		{/* <Button color={'#8f3321'} title="Clue" onPress={() => handleClue(clue)} style={styles.button} /> */}
+				<TouchableOpacity style={styles.image} onPress={() => handleClue(clue)}>
+  				<Image
+    				source={require('../../assets/idea.png')}
+   					 style={styles.imageButton}
+  					/>
+				</TouchableOpacity>
+		  </>
+
+
 			);
 		});
 
@@ -156,8 +272,30 @@ const CrosswordGrid = ({ route  }) => {
 
 
 	return (
+		<View style={{ flex: 1 }}>
+			
+		<View style={styles.headerContainer}>
+			<Text style={styles.headerText}>Level:{number}</Text>
+
+			<View>
+          
+			<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+  <Text style={styles.headerText}>Score:</Text>
+  <View style={styles.headerScore}>
+    <Text style={styles.headerText}>{completionData.point[0]}</Text>
+  </View>
+</View>
+
+
+			</View>
+			
+			
+
+
+		  </View>
 		<ImageBackground source={require('../../assets/bg.png')} style={styles.background}>
   <KeyboardAvoidingView style={styles.container} behavior="padding" enabled>
+	
     <ScrollView
       contentContainerStyle={styles.scrollContainer}
       keyboardShouldPersistTaps="handled"
@@ -165,7 +303,13 @@ const CrosswordGrid = ({ route  }) => {
 	  showsVerticalScrollIndicator={false}> 
       <View style={styles.container}>
         {renderGrid()}
+		<ScrollView
+      contentContainerStyle={styles.scrollContainer}
+      keyboardShouldPersistTaps="handled"
+      keyboardDismissMode="none"
+	  showsVerticalScrollIndicator={false}>
         {renderQuestions()}
+		</ScrollView>
         <View style={styles.buttonContainer}>
           <View style={styles.gap} />
           <Button color={'#8f3321'} title="Verify" onPress={handleVerify} style={styles.button} />
@@ -173,11 +317,38 @@ const CrosswordGrid = ({ route  }) => {
           <Button color={'#8f3321'} title="Reset" onPress={handleReset} style={styles.button} />
           <View style={styles.gap} />
           <Button color={'#8f3321'} title="Solve" onPress={handleSolve} style={styles.button} />
+		  <View style={styles.gap} />
         </View>
+
+		
+
       </View>
     </ScrollView>
+	<Modal
+            animationType="slide"
+            transparent={true}
+            visible={clueModalVisible}
+            onRequestClose={() => {
+              setClueModalVisible(false);
+            }}>
+            <View style={[styles.centeredView]}>
+			
+              <View style={[styles.modalView]}>
+			  <TouchableOpacity 
+                  onPress={() => setClueModalVisible(false)}
+				  style={styles.close}
+				  >
+                  <Text style={styles.closeButton}>X</Text>
+                </TouchableOpacity >
+
+                <Text style={styles.modalText}>{selectedClue}</Text>
+           
+              </View>
+            </View>
+          </Modal>
   </KeyboardAvoidingView>
 </ImageBackground>
+</View>
 
 	);
 };
@@ -188,6 +359,18 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		marginBottom:20,
+		paddingHorizontal:5,
+		height: '100%',
+		width:'100%'
+		
+		
+	},
+
+	headerScore:{
+		borderWidth:1,
+		marginRight:10,
+		alignItems:'center'
+
 	},
 	background: {
 		flex: 1,
@@ -204,27 +387,75 @@ const styles = StyleSheet.create({
 		backgroundColor: '#0097B2',
 		flex: 1 
 	  },
+	  headerContainer: {
+		backgroundColor: '#0097B2',
+		paddingTop: '10%',
+		paddingVertical: '5%',
+		flexDirection: 'row',
+		justifyContent:'space-between'
+	  
+	  },
+	  headerText: {
+		marginLeft:20,
+		marginRight:20,
+		color: 'white',
+		fontSize: 18,
+		fontWeight: 'bold',
+	  },
+	  icon: {
+		marginRight:20,
+		width: 25,
+		height: 20,
+	  },
 	row: {
 		flexDirection: 'row',
 	},
 	cellContainer: {
 		position: 'relative',
+	
+	},
+	image:{
+			position:'absolute',
+			right:0,
+
 	},
 	cell: {
 		borderWidth: 1,
 		margin: 1,
 		borderColor: 'white',
-		width: 30,
-		height: 33,
+		width: 'auto',
+		height: 'auto',
 		textAlign: 'center',
+		flexShrink: 1, // Allow cell to shrink when necessary
+  		flexGrow: 0, // Do not allow cell to grow
 
 		
 	},
+	close: {
+		position: 'absolute',
+		top: -10, // Adjust as needed
+		right: -10, // Adjust as needed
+		backgroundColor: 'brown',
+		paddingBottom: 8,
+		paddingHorizontal: 15,
+		borderRadius: 50,
+		zIndex: 1, // Ensure it's above other content
+		alignSelf:'center',
+		justifyContent:'center',
+		alignItems:'center',
+	  },
+
 	staticCell: {
+		
 		borderColor: 'transparent',
 		color: '#0097B2',
 		
 	},
+	imageButton: {
+		width: 30,
+		height: 30,
+		resizeMode: 'contain',
+	  },
 	smallDigit: {
 		position: 'absolute',
 		top: 2,
@@ -240,6 +471,8 @@ const styles = StyleSheet.create({
 	questionText: {
 		fontSize: 16,
 		color: 'red',
+		marginBottom:10,
+		marginRight:30,
 	
 	},
 	headingContainer: {
@@ -250,6 +483,7 @@ const styles = StyleSheet.create({
 		fontSize: 18,
 		fontWeight: 'bold',
 		color: '#0097B2',
+		
 		// textAlign: 'center',
 	},
 	buttonContainer: {
@@ -264,6 +498,38 @@ const styles = StyleSheet.create({
 	gap: {
 		width: 10, 
 	},
+	centeredView: {
+		
+		justifyContent: "center",
+		alignItems: "center",
+		
+	  },
+	  modalView: {
+		margin: 20,
+		backgroundColor: "white",
+		borderRadius: 20,
+		padding: 35,
+		alignItems: "center",
+		shadowColor: "#000",
+		shadowOffset: {
+		  width: 0,
+		  height: 2
+		},
+	
+		shadowOpacity: 0.25,
+		shadowRadius: 4,
+		elevation: 5
+	  },
+	  modalText: {
+		marginBottom: 15,
+		textAlign: "center"
+	  },
+	  closeButton: {
+		color: 'black',
+		marginTop: 10,
+		textAlign: "center",
+		
+	  }
 });
 
 export default CrosswordGrid

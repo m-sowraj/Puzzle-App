@@ -67,9 +67,9 @@ const App = () => {
         <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'HELLO USER :)' }} />
 
           <Stack.Screen name="DifficultyScreen" component={DifficultyScreen} options={{ title: 'STAGES' }} />
-          <Stack.Screen name="NumberRangeSelector" component={NumberRangeSelector} options={{ title: 'CHOOSE LEVEL' }} />
+          <Stack.Screen name="NumberRangeSelector" component={NumberRangeSelector} options={{ headerShown: false }} />
           <Stack.Screen name="NumberSelectionScreen" component={NumberSelectionScreen} options={{ title: 'CHOOSE LEVEL' }} />
-          <Stack.Screen name="CrosswordGrid" component={CrosswordGrid} options={{ title: '' }} />
+          <Stack.Screen name="CrosswordGrid" component={CrosswordGrid} options={{ headerShown: false }} />
           <Stack.Screen name="SignInScreen" component={SignInScreen} options={{ title: '' }} />
 
         </Stack.Navigator>

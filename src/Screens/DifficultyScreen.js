@@ -6,7 +6,7 @@ const DifficultyScreen = () => {
   const navigation = useNavigation();
 
   const handleDifficultySelect = (difficulty) => {
-    navigation.navigate('NumberRangeSelector');
+    navigation.navigate('NumberRangeSelector',{ difficulty:difficulty });
     // console.log(`Selected difficulty: ${difficulty}`);
   };
 
@@ -14,13 +14,13 @@ const DifficultyScreen = () => {
     <ImageBackground source={require('../../assets/bg.png')} style={styles.background}>
       <View style={styles.container}>
         {/* <Text style={styles.title}>Select Difficulty</Text> */}
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleDifficultySelect('Easy')}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleDifficultySelect('easy')}>
           <Text style={styles.buttonText}>Easy</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleDifficultySelect('Medium')}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleDifficultySelect('medium')}>
           <Text style={styles.buttonText}>Medium</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleDifficultySelect('Hard')}>
+        <TouchableOpacity style={styles.buttonContainer} onPress={() => handleDifficultySelect('hard')}>
           <Text style={styles.buttonText}>Hard</Text>
         </TouchableOpacity>
       </View>
