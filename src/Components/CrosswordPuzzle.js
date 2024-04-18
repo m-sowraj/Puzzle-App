@@ -9,7 +9,83 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 
+// Function to retrieve the completion IDs for all difficulty levels from AsyncStorage
+const getCompletionIds = async () => {
+    try {
+        const completionIdsJson = await AsyncStorage.getItem('completionIds');
+		console.log(completionIdsJson)
+        return completionIdsJson ? JSON.parse(completionIdsJson) : {};
+    } catch (error) {
+        console.error('Error retrieving completion IDs:', error);
+        return {};
+    }
+};
+
+// Function to add a completion ID to the array for a specific difficulty level in AsyncStorage
+const addCompletionId = async (difficulty, completionId) => {
+    try {
+        const completionIds = await getCompletionIds();
+
+        const updatedIds = {
+            ...completionIds,
+            [difficulty]: [...(completionIds[difficulty] || []), completionId],
+        };
+
+        await AsyncStorage.setItem('completionIds', JSON.stringify(updatedIds));
+    } catch (error) {
+        console.error('Error adding completion ID:', error);
+    }
+};
+
+
+
+
 let level = 0;
+
+const updateCompletionStatus = async (subArrayId) => {
+    try {
+        // Read the JSON file
+		const documentDirectory = FileSystem.documentDirectory;
+        const files = await FileSystem.readDirectoryAsync(documentDirectory);
+        console.log('Files in document directory:', files);
+
+        const fileInfo = await FileSystem.getInfoAsync(FileSystem.documentDirectory + 'data.json');
+		console.log(FileSystem.documentDirectory)
+        if (!fileInfo.exists) {
+            console.log('JSON file not found.');
+            return;
+        }
+		console.log(fileInfo)
+        
+        const jsonData = await FileSystem.readAsStringAsync(FileSystem.documentDirectory + 'data.json');
+        let data = JSON.parse(jsonData);
+		console.log(data)
+
+        // Find the sub-array with the provided ID
+        const subArrayToUpdate = data.find(subArray => subArray[0].id === subArrayId);
+        if (subArrayToUpdate) {
+            // Update is_completion to true for all words in the sub-array
+            subArrayToUpdate.forEach(word => {
+                word.is_completion = true;
+            });
+
+            // Write the updated data back to the JSON file
+            await FileSystem.writeAsStringAsync(
+                FileSystem.documentDirectory + 'data.json',
+                JSON.stringify(data)
+            );
+            console.log('Completion status updated successfully.');
+        } else {
+            console.log(`Sub-array with ID ${subArrayId} not found.`);
+        }
+    } catch (error) {
+        console.error('Error updating completion status:', error);
+    }
+};
+
+
+
+
 
 const generateInitialGrid = (crosswordData,difficultylevel,navigation) => {
 	try {
@@ -126,10 +202,20 @@ const CrosswordGrid = ({ route  }) => {
 			let updatedData = { ...completionData };
 			if (difficultylevel === 'easy') {
 				updatedData = { ...completionData, easy: [...completionData.easy, number] ,point:[pnt+pnttoadd] };
+				updateCompletionStatus(crosswordData.id);
+				
+				addCompletionId(difficultylevel, crosswordData[0][0].id );
 			} else if (difficultylevel === 'medium') {
 				updatedData = { ...completionData, medium: [...completionData.medium, number],point:[pnt+pnttoadd] };
+				updateCompletionStatus('../datas/mediumdata.json', crosswordData.id);
+				addCompletionId(difficultylevel, crosswordData[0][0].id );
+
+
 			} else if (difficultylevel === 'hard') {
 				updatedData = { ...completionData, hard: [...completionData.hard, number],point:[pnt+pnttoadd] };
+				updateCompletionStatus('../datas/harddata.json', crosswordData.id);
+				addCompletionId(difficultylevel, crosswordData[0][0].id );
+
 			}
 	
 			try {

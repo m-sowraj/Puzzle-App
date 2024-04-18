@@ -9,6 +9,7 @@ import mediumdata from '../datas/mediumdata.json'
 import harddata from '../datas/harddata.json'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
 const NumberSelectionScreen = ({ start, end , difficultylevel}) => {
   const navigation = useNavigation();
   const numbers = [];
@@ -86,20 +87,35 @@ const NumberSelectionScreen = ({ start, end , difficultylevel}) => {
     chunks.push(numbers.splice(0, 3));
   }
 
-  const getRandomIncompleteQuestion = () => {
-    let incompleteQuestions = data.filter(question =>
-      question.some(word => !word.is_completion)
-    );
-    if (incompleteQuestions.length === 0) {
-      
-      return null;
+  const getRandomIncompleteQuestion = async (difficulty) => {
+    try {
+
+        const completionIdsJson = await AsyncStorage.getItem('completionIds');
+        if (!completionIdsJson) {
+            console.log('No completion IDs found.');
+            return null;
+        }
+        const completionIds = JSON.parse(completionIdsJson)[difficulty] || [];
+
+        // Step 2: Filter out questions based on completion IDs to get incomplete questions
+        const incompleteQuestions = data.filter(question =>
+            !question.some(word => completionIds.includes(word.id))
+        );
+
+        // Step 3: If there are no incomplete questions, return null. Otherwise, return a random incomplete question.
+        if (incompleteQuestions.length === 0) {
+            return null;
+        }
+        console.log(incompleteQuestions,"-------------------")
+        return incompleteQuestions[Math.floor(Math.random() * incompleteQuestions.length)];
+    } catch (error) {
+        console.error('Error getting random incomplete question:', error);
+        return null;
     }
-    return incompleteQuestions[Math.floor(Math.random() * incompleteQuestions.length)];
-  };
+};
+  async function handleNumberSelect(number,difficultylevel) {
 
-  function handleNumberSelect(number) {
-
-    const words = getRandomIncompleteQuestion(); 
+    const words = await getRandomIncompleteQuestion(difficultylevel); 
     // Extract only words from the list for generating the crossword puzzle
     const wordList = words.map(item => item.word);
     // Generate crossword puzzle
@@ -112,12 +128,13 @@ const NumberSelectionScreen = ({ start, end , difficultylevel}) => {
     result.positionObjArr.forEach((wordObj, index) => {
       const { wordStr, xNum, yNum, isHorizon } = wordObj;
       const orientation = isHorizon ? 'across' : 'down';
-      const { word, hint ,clue } = words[index]; // Get the word and hint from the original array
+      const { word, hint ,clue ,id } = words[index]; // Get the word and hint from the original array
     
       clues.push({
         answer: word.toUpperCase(),
         hint: hint, 
         clue: clue,
+        id:id,
         startx: xNum + 1, 
         starty: yNum + 1, // Adjust to start from 1-based index
         orientation: orientation,
@@ -134,7 +151,7 @@ const NumberSelectionScreen = ({ start, end , difficultylevel}) => {
     // return false;
     return completionData[difficultylevel].includes(number);
   };
-
+  
 
 
   return (
@@ -151,7 +168,7 @@ const NumberSelectionScreen = ({ start, end , difficultylevel}) => {
               styles.button,
               isLevelCompleted(number) && styles.completedButton,
             ]}
-            onPress={() => handleNumberSelect(number)}
+            onPress={() => handleNumberSelect(number,difficultylevel)}
             disabled={isLevelCompleted( number)}
           >
             <Text style={styles.buttonText}>{number}</Text>

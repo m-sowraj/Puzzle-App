@@ -1,30 +1,161 @@
 [
     [
-        { "word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
-        { "word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
-        { "word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
-        { "word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
-        { "word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
+        { "id": 1,"word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
+        { "id": 1,"word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
+        { "id": 1,"word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
+        { "id": 1,"word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
+        { "id": 1,"word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
     ],
     [
-        { "word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
-        { "word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
-        { "word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
-        { "word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
-        { "word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
+        { "id": 2,"word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "id": 2,"word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "id": 2,"word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "id": 2,"word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "id": 2,"word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
     ],
     [
-        { "word": "CHOCOLATE", "hint": "Sweet treat", "clue": "Made from cocoa beans", "is_completion": false },
-        { "word": "HOUSE", "hint": "Place of residence", "clue": "Where people live", "is_completion": false },
-        { "word": "COAST", "hint": "Seashore", "clue": "Where land meets the sea", "is_completion": false },
-        { "word": "LEMON", "hint": "Citrus fruit", "clue": "Yellow sour fruit", "is_completion": false },
-        { "word": "TEA", "hint": "Hot beverage", "clue": "Commonly enjoyed with milk or sugar", "is_completion": false }
+        { "id": 3,"word": "CHOCOLATE", "hint": "Sweet treat", "clue": "Made from cocoa beans", "is_completion": false },
+        { "id": 3,"word": "HOUSE", "hint": "Place of residence", "clue": "Where people live", "is_completion": false },
+        { "id": 3,"word": "COAST", "hint": "Seashore", "clue": "Where land meets the sea", "is_completion": false },
+        { "id": 3,"word": "LEMON", "hint": "Citrus fruit", "clue": "Yellow sour fruit", "is_completion": false },
+        { "id": 3,"word": "TEA", "hint": "Hot beverage", "clue": "Commonly enjoyed with milk or sugar", "is_completion": false }
     ],
     [
-        { "word": "BREAK", "hint": "Pause", "clue": "Take a rest", "is_completion": false },
-        { "word": "CLOUD", "hint": "Condensed water vapor", "clue": "White fluffy mass in the sky", "is_completion": false },
-        { "word": "BOTTLE", "hint": "Container", "clue": "Used for holding liquids", "is_completion": false },
-        { "word": "DESK", "hint": "Work surface", "clue": "Where you might put your computer", "is_completion": false },
-        { "word": "SODA", "hint": "Carbonated drink", "clue": "Fizzy beverage", "is_completion": false }
+        { "id": 4,"word": "CLOUD", "hint": "Condensed water vapor", "clue": "White fluffy mass in the sky", "is_completion": false },
+        { "id": 4,"word": "BREAK", "hint": "Pause", "clue": "Take a rest", "is_completion": false },
+        { "id": 4,"word": "BOTTLE", "hint": "Container", "clue": "Used for holding liquids", "is_completion": false },
+        { "id": 4,"word": "DESK", "hint": "Work surface", "clue": "Where you might put your computer", "is_completion": false },
+        { "id": 4,"word": "SODA", "hint": "Carbonated drink", "clue": "Fizzy beverage", "is_completion": false }
+    ],
+    [
+        { "id": 5,"word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
+        { "id": 5,"word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
+        { "id": 5,"word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
+        { "id": 5,"word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
+        { "id": 5,"word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
+    ],
+    [
+        { "id": 6,"word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "id": 6,"word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "id": 6,"word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "id": 6,"word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "id": 6,"word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
+    ],
+    [
+        { "id": 7,"word": "CHOCOLATE", "hint": "Sweet treat", "clue": "Made from cocoa beans", "is_completion": false },
+        { "id": 7,"word": "HOUSE", "hint": "Place of residence", "clue": "Where people live", "is_completion": false },
+        { "id": 7,"word": "COAST", "hint": "Seashore", "clue": "Where land meets the sea", "is_completion": false },
+        { "id": 7,"word": "LEMON", "hint": "Citrus fruit", "clue": "Yellow sour fruit", "is_completion": false },
+        { "id": 7,"word": "TEA", "hint": "Hot beverage", "clue": "Commonly enjoyed with milk or sugar", "is_completion": false }
+    ],
+    [
+        { "id": 8,"word": "CLOUD", "hint": "Condensed water vapor", "clue": "White fluffy mass in the sky", "is_completion": false },
+        { "id": 8,"word": "BREAK", "hint": "Pause", "clue": "Take a rest", "is_completion": false },
+        { "id": 8,"word": "BOTTLE", "hint": "Container", "clue": "Used for holding liquids", "is_completion": false },
+        { "id": 8,"word": "DESK", "hint": "Work surface", "clue": "Where you might put your computer", "is_completion": false },
+        { "id": 8,"word": "SODA", "hint": "Carbonated drink", "clue": "Fizzy beverage", "is_completion": false }
+    ],[
+        { "id": 9,"word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
+        { "id": 9,"word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
+        { "id": 9,"word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
+        { "id": 9,"word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
+        { "id": 9,"word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
+    ],
+    [
+        { "id": 10,"word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "id": 10,"word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "id": 10,"word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "id": 10,"word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "id": 10,"word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
+    ],
+    [
+        { "id": 11,"word": "CHOCOLATE", "hint": "Sweet treat", "clue": "Made from cocoa beans", "is_completion": false },
+        { "id": 11,"word": "HOUSE", "hint": "Place of residence", "clue": "Where people live", "is_completion": false },
+        { "id": 11,"word": "COAST", "hint": "Seashore", "clue": "Where land meets the sea", "is_completion": false },
+        { "id": 11,"word": "LEMON", "hint": "Citrus fruit", "clue": "Yellow sour fruit", "is_completion": false },
+        { "id": 11,"word": "TEA", "hint": "Hot beverage", "clue": "Commonly enjoyed with milk or sugar", "is_completion": false }
+    ],
+    [
+        { "id": 12,"word": "CLOUD", "hint": "Condensed water vapor", "clue": "White fluffy mass in the sky", "is_completion": false },
+        { "id": 12,"word": "BREAK", "hint": "Pause", "clue": "Take a rest", "is_completion": false },
+        { "id": 12,"word": "BOTTLE", "hint": "Container", "clue": "Used for holding liquids", "is_completion": false },
+        { "id": 12,"word": "DESK", "hint": "Work surface", "clue": "Where you might put your computer", "is_completion": false },
+        { "id": 12,"word": "SODA", "hint": "Carbonated drink", "clue": "Fizzy beverage", "is_completion": false }
+    ],
+    [
+        { "id": 13,"word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
+        { "id": 13,"word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
+        { "id": 13,"word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
+        { "id": 13,"word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
+        { "id": 13,"word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
+    ],
+    [
+        { "id": 15,"word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "id": 15,"word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "id": 15,"word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "id": 15,"word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "id": 15,"word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
+    ],
+    [
+        { "id": 16,"word": "CHOCOLATE", "hint": "Sweet treat", "clue": "Made from cocoa beans", "is_completion": false },
+        { "id": 16,"word": "HOUSE", "hint": "Place of residence", "clue": "Where people live", "is_completion": false },
+        { "id": 16,"word": "COAST", "hint": "Seashore", "clue": "Where land meets the sea", "is_completion": false },
+        { "id": 16,"word": "LEMON", "hint": "Citrus fruit", "clue": "Yellow sour fruit", "is_completion": false },
+        { "id": 16,"word": "TEA", "hint": "Hot beverage", "clue": "Commonly enjoyed with milk or sugar", "is_completion": false }
+    ],
+    [
+        { "id": 17,"word": "CLOUD", "hint": "Condensed water vapor", "clue": "White fluffy mass in the sky", "is_completion": false },
+        { "id": 17,"word": "BREAK", "hint": "Pause", "clue": "Take a rest", "is_completion": false },
+        { "id": 17,"word": "BOTTLE", "hint": "Container", "clue": "Used for holding liquids", "is_completion": false },
+        { "id": 17,"word": "DESK", "hint": "Work surface", "clue": "Where you might put your computer", "is_completion": false },
+        { "id": 17,"word": "SODA", "hint": "Carbonated drink", "clue": "Fizzy beverage", "is_completion": false }
+    ],[
+        { "id": 18,"word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
+        { "id": 18,"word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
+        { "id": 18,"word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
+        { "id": 18,"word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
+        { "id": 18,"word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
+    ],
+    [
+        { "id": 19,"word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "id": 19,"word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "id": 19,"word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "id": 19,"word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "id": 19,"word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
+    ],
+    [
+        { "id": 20,"word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "id": 20,"word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "id": 20,"word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "id": 20,"word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "id": 20,"word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
+    ],
+    [
+        { "id": 21,"word": "CHOCOLATE", "hint": "Sweet treat", "clue": "Made from cocoa beans", "is_completion": false },
+        { "id": 21,"word": "HOUSE", "hint": "Place of residence", "clue": "Where people live", "is_completion": false },
+        { "id": 21,"word": "COAST", "hint": "Seashore", "clue": "Where land meets the sea", "is_completion": false },
+        { "id": 21,"word": "LEMON", "hint": "Citrus fruit", "clue": "Yellow sour fruit", "is_completion": false },
+        { "id": 21,"word": "TEA", "hint": "Hot beverage", "clue": "Commonly enjoyed with milk or sugar", "is_completion": false }
+    ],
+    [
+        { "id": 22,"word": "CLOUD", "hint": "Condensed water vapor", "clue": "White fluffy mass in the sky", "is_completion": false },
+        { "id": 22,"word": "BREAK", "hint": "Pause", "clue": "Take a rest", "is_completion": false },
+        { "id": 22,"word": "BOTTLE", "hint": "Container", "clue": "Used for holding liquids", "is_completion": false },
+        { "id": 22,"word": "DESK", "hint": "Work surface", "clue": "Where you might put your computer", "is_completion": false },
+        { "id": 22,"word": "SODA", "hint": "Carbonated drink", "clue": "Fizzy beverage", "is_completion": false }
+    ],
+    [
+        { "id": 23,"word": "HI", "hint": "Greeting", "clue": "Start of a conversation", "is_completion": false },
+        { "id": 23,"word": "HI", "hint": "Expression of greeting", "clue": "Short word for 'hello'", "is_completion": false },
+        { "id": 23,"word": "HELLO", "hint": "Common greeting", "clue": "Formal way to greet someone", "is_completion": false },
+        { "id": 23,"word": "APPLE", "hint": "Fruit", "clue": "Commonly red or green and crunchy", "is_completion": false },
+        { "id": 23,"word": "BANANA", "hint": "Yellow fruit", "clue": "Long curved fruit", "is_completion": false }
+    ],
+    [
+        { "id": 25,"word": "ORANGE", "hint": "Citrus fruit", "clue": "Colorful fruit with a tangy taste", "is_completion": false },
+        { "id": 25,"word": "RACE", "hint": "Competition", "clue": "Event where participants compete against each other", "is_completion": false },
+        { "id": 25,"word": "AGE", "hint": "Number of years", "clue": "How old someone is", "is_completion": false },
+        { "id": 25,"word": "NEST", "hint": "Bird's home", "clue": "Where birds lay their eggs", "is_completion": false },
+        { "id": 25,"word": "GONE", "hint": "Left", "clue": "Not here anymore", "is_completion": false }
     ]
 ]
